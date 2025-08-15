@@ -265,6 +265,16 @@ function PracticeSetup({ onStart }: { onStart: () => void }) {
     setter(arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val]);
   }
 
+  function toggleDomain(id: string) {
+    setSelectedDomains((prev) => {
+      if (prev.includes(id)) {
+        setSelectedSkills((skills) => skills.filter((sk) => !(SKILLS[id] || []).includes(sk)));
+        return prev.filter((d) => d !== id);
+      }
+      return [...prev, id];
+    });
+  }
+
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
       <Card>
@@ -277,7 +287,13 @@ function PracticeSetup({ onStart }: { onStart: () => void }) {
             <p className="text-sm font-medium mb-2">Domains</p>
             <div className="flex flex-wrap gap-2">
               {DOMAINS.map(d => (
-                <Chip key={d.id} active={selectedDomains.includes(d.id)} onClick={() => toggle(selectedDomains, d.id, setSelectedDomains)}>{d.label}</Chip>
+                <Chip
+                  key={d.id}
+                  active={selectedDomains.includes(d.id)}
+                  onClick={() => toggleDomain(d.id)}
+                >
+                  {d.label}
+                </Chip>
               ))}
             </div>
           </div>
